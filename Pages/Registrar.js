@@ -8,19 +8,55 @@ import {
   StyleSheet,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { useState } from "react";
+
+import app from "../configFirebase/FirebaseConfig";
+import { addDoc, collection, getFirestore } from "firebase/firestore";
 
 const imgEncabezado = require("../Images/img_fondo.jpg");
+const db = getFirestore(app);
 
 export default function Registrar() {
   const navigation = useNavigation();
+
+  const inicioEstado = {
+    nombreCompleto: "",
+    email: "",
+    clave: "",
+  };
+
+  const [estado, setEstado] = useState(inicioEstado);
+
+  const HandleChangeText = (value, name) => {
+    setEstado({ ...estado, [name]: value });
+  };
+
+  const RegistarUsuario = async () => {
+    try {
+      await addDoc(collection(db, "User"), { ...estado });
+
+      navigation.navigate("Inicio");
+    } catch {
+      console.error(error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Image source={imgEncabezado} style={styles.image} />
       <Image source={require("../Images/logo_fruit.png")} style={styles.logo} />
       <View style={styles.formContainer}>
         <Text style={styles.title}>Crear cuenta nueva</Text>
-        <TextInput style={styles.input} placeholder="Nombre completo" />
-        <TextInput style={styles.input} placeholder="Correo electrónico" />
+        <TextInput
+          style={styles.input}
+          placeholder="Nombre completo"
+          onChangeText={(value) => HandleChangeText(value, "nombreCompleto")}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Correo electrónico"
+          onChangeText={(value) => HandleChangeText(value, "email")}
+        />
         <TextInput
           style={styles.input}
           placeholder="Contraseña"
@@ -30,11 +66,9 @@ export default function Registrar() {
           style={styles.input}
           placeholder="Comprobar contraseña"
           secureTextEntry={true}
+          onChangeText={(value) => HandleChangeText(value, "clave")}
         />
-        <TouchableOpacity
-          onPress={() => navigation.navigate("Inicio")}
-          style={styles.button}
-        >
+        <TouchableOpacity onPress={RegistarUsuario} style={styles.button}>
           <Text style={styles.buttonText}>Registrarse</Text>
         </TouchableOpacity>
       </View>

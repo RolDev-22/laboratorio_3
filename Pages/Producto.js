@@ -8,25 +8,71 @@ import {
   StyleSheet,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { useState } from "react";
+
+import app from "../configFirebase/FirebaseConfig";
+import { addDoc, collection, getFirestore } from "firebase/firestore";
 
 const imgEncabezado = require("../Images/img_fondo.jpg");
+const db = getFirestore(app);
 
 export default function Producto() {
   const navigation = useNavigation();
+
+  const inicioEstado = {
+    nombreProducto: "",
+    codigoProducto: "",
+    cantidadProducto: "",
+    fechaCaduca: "",
+  };
+
+  const [estado, setEstado] = useState(inicioEstado);
+
+  const HandleChangeText = (value, name) => {
+    setEstado({ ...estado, [name]: value });
+  };
+
+  const RegistarProducto = async () => {
+    try {
+      await addDoc(collection(db, "Product"), { ...estado });
+
+      navigation.navigate("Inicio");
+    } catch {
+      console.error(error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Image source={imgEncabezado} style={styles.image} />
       <Image source={require("../Images/logo_fruit.png")} style={styles.logo} />
       <View style={styles.formContainer}>
         <Text style={styles.title}>Productos</Text>
-        <TextInput style={styles.input} placeholder="Nombre Producto" />
-        <TextInput style={styles.input} placeholder="Código Producto" />
-        <TextInput style={styles.input} placeholder="Cantidad" />
-        <TextInput style={styles.input} placeholder="Fecha Caducidad" />
-        <TouchableOpacity
-          onPress={() => navigation.navigate("Inicio")}
-          style={styles.button}
-        >
+        <TextInput
+          style={styles.input}
+          placeholder="Nombre Producto"
+          onChangeText={(value) => HandleChangeText(value, "nombreProducto")}
+        />
+
+        <TextInput
+          style={styles.input}
+          placeholder="Código Producto"
+          onChangeText={(value) => HandleChangeText(value, "codigoProducto")}
+        />
+
+        <TextInput
+          style={styles.input}
+          placeholder="Cantidad"
+          onChangeText={(value) => HandleChangeText(value, "cantidadProducto")}
+        />
+
+        <TextInput
+          style={styles.input}
+          placeholder="Fecha Caducidad"
+          onChangeText={(value) => HandleChangeText(value, "fechaCaduca")}
+        />
+
+        <TouchableOpacity onPress={RegistarProducto} style={styles.button}>
           <Text style={styles.buttonText}>Guardar</Text>
         </TouchableOpacity>
       </View>
