@@ -40,7 +40,7 @@ export default function Home() {
           ></TextInput>
 
           <TouchableOpacity
-            onPress={() => navigation.navigate("Producto")}
+            onPress={() => navigation.navigate("Main")}
             style={styles.touchIngresar}
           >
             <Text style={styles.textTouch}>Ingresar</Text>

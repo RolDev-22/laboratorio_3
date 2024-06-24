@@ -35,7 +35,7 @@ export default function Registrar() {
     try {
       await addDoc(collection(db, "User"), { ...estado });
 
-      navigation.navigate("Inicio");
+      navigation.navigate("Registrar");
     } catch {
       console.error(error);
     }

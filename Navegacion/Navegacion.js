@@ -3,8 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import Home from "../Pages/Home";
-import Registrar from "../Pages/Registrar";
-import Producto from "../Pages/Producto";
+import Page_Main from "../Pages/Page_Main";
 
 const MyStacks = createNativeStackNavigator();
 
@@ -12,11 +11,10 @@ const Stacks = () => {
   return (
     <MyStacks.Navigator
       initialRouteName="Home"
-      screenOptions={{ headerShown: false }}
+      screenOptions={{ headerShown: true }}
     >
       <MyStacks.Screen name="Inicio" component={Home}></MyStacks.Screen>
-      <MyStacks.Screen name="Registrar" component={Registrar}></MyStacks.Screen>
-      <MyStacks.Screen name="Producto" component={Producto}></MyStacks.Screen>
+      <MyStacks.Screen name="Main" component={Page_Main}></MyStacks.Screen>
     </MyStacks.Navigator>
   );
 };

@@ -35,10 +35,10 @@ export default function Producto() {
   const RegistarProducto = async () => {
     try {
       await addDoc(collection(db, "Product"), { ...estado });
-
-      navigation.navigate("Inicio");
+      alert("Documento añadido con éxito");
     } catch {
-      console.error(error);
+      console.log("ha ocurrido un error");
+      // console.error("La causa del error presentado es: ", error);
     }
   };
 
@@ -83,6 +83,7 @@ export default function Producto() {
 const styles = StyleSheet.create({
   container: {
     display: "flex",
+    height: "100%",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
